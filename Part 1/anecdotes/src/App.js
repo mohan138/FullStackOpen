@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 
 const Header = ({ text }) => <h1>{text}</h1>
@@ -18,19 +19,18 @@ const Button = ({ handleClick, text }) => {
 }
 
 const Winner = ({ anecdotes, vote }) => {
-  let arr = Object.values(vote);
-  const highestVoted = Math.max(...arr);
+  const arr: number[] = Object.values(vote);
+  let highestVoted = Math.max(...arr)
   const indexOfHighestVoted = arr.indexOf(highestVoted);
   console.log(indexOfHighestVoted);
-  if (highestVoted > 0) {
-    return (
-      <div>
-        <Header text="Anecdote with most votes" />
-        <p>{anecdotes[indexOfHighestVoted]}</p>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <Header text="Anecdote with most votes" />
+      <p>{anecdotes[indexOfHighestVoted]}</p>
+    </div>
+  )
 }
+
 
 
 const App = () => {
