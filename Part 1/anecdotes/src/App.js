@@ -20,9 +20,8 @@ const Button = ({ handleClick, text }) => {
 
 const Winner = ({ anecdotes, vote }) => {
   const arr: number[] = Object.values(vote);
-  let highestVoted = Math.max(...arr)
+  let highestVoted = Math.max(...arr);
   const indexOfHighestVoted = arr.indexOf(highestVoted);
-  console.log(indexOfHighestVoted);
   return (
     <div>
       <Header text="Anecdote with most votes" />
