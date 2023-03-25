@@ -1,6 +1,6 @@
 import phoneServices from './services/phoneServices';
 import Note from './components/Note';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 
 
