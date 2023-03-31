@@ -1,6 +1,10 @@
-const Note = ({ text }) => {
+
+const Note = ({ text, showDetails }) => {
   return (
-    <li>{text}</li>
+    <div>
+      <li style={{ display: "inline" }}>{text} </li>
+      <button onClick={showDetails}>show</button>
+    </div>
   )
 }
 
