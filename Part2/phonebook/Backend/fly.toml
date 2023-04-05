@@ -9,6 +9,7 @@ processes = []
 
 [env]
   PORT = "8080"
+  MONGODB_URL="mongodb+srv://Avayamukhari:9MHAE0pVuT66iBmS@phonebook.qzqmvh9.mongodb.net/Phonebook?retryWrites=true&w=majority"
 
 [[services]]
   internal_port = 8080
