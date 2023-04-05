@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Person = require("./modules/person");
+const ObjectId = require("mongoose").Types.ObjectId;
 require("dotenv").config();
 
 morgan.token("body", req => {
@@ -12,6 +13,8 @@ morgan.token("body", req => {
 })
 
 app.use(cors(), express.json(), morgan(":method :url :status :res[content-length] - :response-time ms :body"), express.static("build"));
+
+
 
 const url = process.env.MONGODB_URL;
 
@@ -31,8 +34,10 @@ app.get("/persons", async (request, response) => {
 
 app.get("/persons/:id", async (request, response) => {
   try {
-    await mongoose.connect(url);
-    const result = await Person.findOne({ id: request.params.id });
+    await mongoose.connect(url);;
+    const result = await Person.findOne({ _id: new ObjectId(request.params.id) });
+    console.log("hello");
+    console.log(result);
     if (result) {
       response.status(200).json(result);
     } else {
@@ -54,7 +59,6 @@ app.post("/persons", async (request, response) => {
     const existingIds = existingPersons.map(person => person.id);
     const maxId = Math.max(...existingIds);
     const newPerson = new Person({
-      id: Math.round(Math.random() * 10000),
       Name: request.body.Name,
       Phone: request.body.Phone
     });
@@ -78,12 +82,12 @@ app.get("/info", (request, response) => {
 app.put("/persons/:id", async (request, response) => {
   try {
     await mongoose.connect(url);
-    const person = await Person.findOne({ id: request.params.id });
+    const person = await Person.findOne({ _id: new ObjectId(request.params.id) });
     if (!person) {
       return response.status(404).json({ error: "Person not found" });
     }
-    const result = await Person.updateOne({ id: request.params.id }, { $set: { Phone: request.body.number } });
-    const updatedPerson = await Person.findOne({ id: request.params.id });
+    const result = await Person.updateOne({ _id: new ObjectId(request.params.id) }, { $set: { Phone: request.body.number } });
+    const updatedPerson = await Person.findOne({ _id: new ObjectId(request.params.id) });
     response.status(201).json(updatedPerson);
   } catch (error) {
     response.status(500).json({ error: "Failed to update person" });
@@ -94,7 +98,7 @@ app.put("/persons/:id", async (request, response) => {
 app.delete("/persons/:id", async (request, response) => {
   try {
     await mongoose.connect(url);
-    const result = await Person.deleteOne({ id: request.params.id });
+    const result = await Person.deleteOne({ _id: new ObjectId(request.params.id) });
     mongoose.connection.close();
     response.status(200).json({ message: "Document deleted successfully", result });
   } catch (error) {
