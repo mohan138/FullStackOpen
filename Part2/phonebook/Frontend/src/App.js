@@ -41,16 +41,16 @@ const App = () => {
   const AddNote = (event) => {
     event.preventDefault();
     const entry = {
-      name: name,
-      number: number
+      Name: name,
+      Phone: number
     }
-    if (persons.map(person => person.name).includes(entry.name)) {
-      if (window.confirm(`${entry.name} is already added to phonebook, replace the old number with a new one?`)) {
-        const separatedPerson = persons.find(person => person.name === entry.name);
-        const updatedPerson = { ...separatedPerson, number: entry.number }
+    if (persons.map(person => person.Name).includes(entry.Name)) {
+      if (window.confirm(`${entry.Name} is already added to phonebook, replace the old number with a new one?`)) {
+        const separatedPerson = persons.find(person => person.Name === entry.Name);
+        const updatedPerson = { ...separatedPerson, number: entry.Phone }
         phoneServices.update(separatedPerson.id, updatedPerson).then(response => {
           setPersons(persons.map(person => person.id !== separatedPerson.id ? person : response));
-          setMessage(name);
+          setMessage(entry.Name);
           setName("");
           setNumber("");
           setAddedStatus(true);
@@ -59,7 +59,7 @@ const App = () => {
           }, 3000);
         }).catch(error => {
           console.log(error);
-          setFailMessage(name);
+          setFailMessage(entry.Name);
           setFailMessageStatus(true);
           setTimeout(() => {
             setFailMessageStatus(false);
@@ -70,6 +70,7 @@ const App = () => {
     else {
       phoneServices.add(entry).then(response => {
         setPersons(persons.concat(response));
+        console.log(persons);
         setMessage(name);
         setName("");
         setNumber("");
@@ -85,7 +86,7 @@ const App = () => {
   const search = (event) => {
     if (event.target.value.length > 0) {
       console.log()
-      const filteredList = persons.filter(person => person.name.toLowerCase().includes(event.target.value.toLowerCase()));
+      const filteredList = persons.filter(person => person.Name.toLowerCase().includes(event.target.value.toLowerCase()));
       setPersons(filteredList);
     }
     else {
@@ -121,7 +122,7 @@ const App = () => {
         <button type="submit">save</button>
       </form>
       <h3>Numbers</h3>
-      {persons.map(person => <Note key={person.id} name={person.name} phone={person.number} remove={() => remove(person)} />)}
+      {persons.map(person => <Note key={person.id} name={person.Name} phone={person.Phone} remove={() => remove(person)} />)}
     </div >
   )
 }
