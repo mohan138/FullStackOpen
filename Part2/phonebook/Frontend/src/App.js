@@ -98,7 +98,7 @@ const App = () => {
 
   const remove = (person) => {
     const id = person.id;
-    if (window.confirm(`Delete ${person.name}?`)) {
+    if (window.confirm(`Delete ${person.Name}?`)) {
       phoneServices.clear(id).then(() => setPersons(persons.filter(person => person.id !== id)))
     }
   }

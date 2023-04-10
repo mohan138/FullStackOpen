@@ -4,6 +4,7 @@
   "description": "backend server",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "error",
@@ -15,6 +16,8 @@
   "author": "Mohan",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.37.0",
+    "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.22"
   },
   "dependencies": {

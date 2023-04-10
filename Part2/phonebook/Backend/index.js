@@ -10,7 +10,7 @@ require("dotenv").config();
 
 morgan.token("body", req => {
   return JSON.stringify(req.body);
-})
+});
 
 app.use(cors(), express.json(), morgan(":method :url :status :res[content-length] - :response-time ms :body"), express.static("build"));
 
@@ -34,7 +34,7 @@ app.get("/persons", async (request, response) => {
 
 app.get("/persons/:id", async (request, response) => {
   try {
-    await mongoose.connect(url);;
+    await mongoose.connect(url);
     const result = await Person.findOne({ _id: new ObjectId(request.params.id) });
     console.log("hello");
     console.log(result);
@@ -54,10 +54,6 @@ app.get("/persons/:id", async (request, response) => {
 app.post("/persons", async (request, response) => {
   try {
     await mongoose.connect(url);
-    const existingPersons = await Person.find({});
-    console.log(existingPersons);
-    const existingIds = existingPersons.map(person => person.id);
-    const maxId = Math.max(...existingIds);
     const newPerson = new Person({
       Name: request.body.Name,
       Phone: request.body.Phone
@@ -72,13 +68,6 @@ app.post("/persons", async (request, response) => {
   }
 });
 
-
-app.get("/info", (request, response) => {
-  response.send(`
-  <p>Phonebook has info for ${Notes.length} people</p>
-  <p>${Date()}</p>`);
-})
-
 app.put("/persons/:id", async (request, response) => {
   try {
     await mongoose.connect(url);
@@ -86,7 +75,7 @@ app.put("/persons/:id", async (request, response) => {
     if (!person) {
       return response.status(404).json({ error: "Person not found" });
     }
-    const result = await Person.updateOne({ _id: new ObjectId(request.params.id) }, { $set: { Phone: request.body.number } });
+    await Person.updateOne({ _id: new ObjectId(request.params.id) }, { $set: { Phone: request.body.number } });
     const updatedPerson = await Person.findOne({ _id: new ObjectId(request.params.id) });
     response.status(201).json(updatedPerson);
   } catch (error) {
@@ -104,10 +93,10 @@ app.delete("/persons/:id", async (request, response) => {
   } catch (error) {
     response.status(500).json({ error: "Failed to delete document" });
   }
-})
+});
 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`);
 });
